@@ -32,3 +32,29 @@ if (!$response || !isset($data['data']) || !is_array($data['data'])) {
     echo "<h1>No news found or an error occurred.</h1>";
     exit;
 }
+
+// Loop through each news item and display it
+foreach ($data['data'] as $newsItem) {
+    $headline    = $newsItem['title']       ?? 'No Headline';
+    $description = $newsItem['description'] ?? 'No Description';
+    $dateString  = $newsItem['published_at'] ?? 'No Date';
+
+    // Format the date if available
+    if ($dateString) {
+        try {
+            $date = new DateTime($dateString);
+            $formattedDate = $date->format('d/m/Y H:i');
+        } catch (Exception $e) {
+            $formattedDate = 'Invalid date';
+        }
+    } else {
+        $formattedDate = 'No date';
+    }
+
+    //Print news data
+    echo "<article>";
+    echo "<p>$formattedDate</p>";
+    echo "<h2>" . htmlspecialchars($headline) . "</h2>";
+    echo "<p>" . nl2br(htmlspecialchars($description)) . "</p>";
+    echo "</article>";
+}
