@@ -23,3 +23,4 @@ $contextOptions = [
 $context = stream_context_create($contextOptions);
 
 $response = @file_get_contents($url, false, $context);
+$data = json_decode($response, true);
