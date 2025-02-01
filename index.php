@@ -4,6 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+include 'header.php';
 
 $apiToken = $_ENV['API_TOKEN'] ?? '';
 
