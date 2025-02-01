@@ -26,3 +26,9 @@ $response = @file_get_contents($url, false, $context);
 $data = json_decode($response, true);
 
 header('Content-Type: text/html; charset=UTF-8');
+
+// Basic error checks
+if (!$response || !isset($data['data']) || !is_array($data['data'])) {
+    echo "<h1>No news found or an error occurred.</h1>";
+    exit;
+}
