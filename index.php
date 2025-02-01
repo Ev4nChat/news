@@ -14,3 +14,12 @@ $queryParams = http_build_query([
     'api_token' => $apiToken
 ]);
 $url = $baseUrl . '?' . $queryParams;
+
+$contextOptions = [
+    "http" => [
+        "header" => "User-Agent: MyNewsScript/1.0\r\n"
+    ]
+];
+$context = stream_context_create($contextOptions);
+
+$response = @file_get_contents($url, false, $context);
