@@ -43,7 +43,7 @@ if (!isset($data['data']) || !is_array($data['data'])) {
 foreach ($data['data'] as $newsItem) {
     $headline    = $newsItem['title']       ?? 'No Headline';
     $description = $newsItem['description'] ?? 'No Description';
-    $dateString  = $newsItem['published_at'] ?? 'No Date';
+    $dateString  = $newsItem['published_at'] ?? null;
 
     // Format the date if available
     if ($dateString) {
