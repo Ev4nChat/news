@@ -4,7 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-include 'header.php';
+include 'header.html';
 
 $apiToken = $_ENV['API_TOKEN'] ?? '';
 
@@ -64,3 +64,5 @@ foreach ($data['data'] as $newsItem) {
     echo "<p>" . nl2br(htmlspecialchars($description)) . "</p>";
     echo "</article>";
 }
+
+include 'footer.html';
