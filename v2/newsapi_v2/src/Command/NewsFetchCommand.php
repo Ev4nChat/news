@@ -26,7 +26,7 @@ class NewsFetchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->httpClient->request('GET', 'https://api.thenewsapi.com/v1/news/top', [
+        $response = $this->httpClient->request('GET', 'https://api.thenewsapi.com/v1/news/top?locale=us&language=en', [
             'headers' => [
                 'Authorization' => 'Bearer ' . getenv('API_TOKEN'),
             ],
