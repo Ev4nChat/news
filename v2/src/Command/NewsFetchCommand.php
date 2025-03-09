@@ -6,61 +6,66 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use DateTime;
 
 class NewsFetchCommand extends Command
 {
-    private $httpClient;
+    private HttpClientInterface $client;
 
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(HttpClientInterface $client)
     {
         parent::__construct();
-        $this->httpClient = $httpClient;
+        $this->client = $client;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('app:fetch-news')
-             ->setDescription('Fetches the latest news using TheNewsAPI');
+            ->setDescription('Fetches the latest news using TheNewsAPI');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->httpClient->request('GET', 'https://api.thenewsapi.com/v1/news/top?locale=us&language=en', [
+        $API_TOKEN = isset($_ENV['API_TOKEN']) && is_string($_ENV['API_TOKEN']) ? $_ENV['API_TOKEN'] : '';
+
+        $response = $this->client->request('GET', 'https://api.thenewsapi.com/v1/news/top?locale=us&language=en', [
             'headers' => [
-                'Authorization' => 'Bearer ' . getenv('API_TOKEN'),
+                'Authorization' => 'Bearer ' . $API_TOKEN
+
+                ,
             ],
         ]);
-
-        if (!$response) {
-            echo "<h1>No news found</h1>";
-            exit;
-        }
 
         $data = $response->toArray();
 
         if (!isset($data['data']) || !is_array($data['data'])) {
-            echo "<h1>No news found or an error occurred.</h1>";
-            exit;
+            $output->writeln("No news found or an error occurred.");
+            return Command::FAILURE;
         }
 
         foreach ($data['data'] as $article) {
+            if (!is_array($article)) {
+                continue;
+            }
             $dateString  = $article['published_at'] ?? null;
 
-            // Format the date if available
-            if ($dateString) {
+            if (is_string($dateString)) {
                 try {
-                    $date = new DateTime($dateString);
+                    $date = new \DateTime($dateString);
                     $formattedDate = $date->format('d/m/Y H:i');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $formattedDate = 'Invalid date';
                 }
             } else {
                 $formattedDate = 'No date';
             }
 
-            $output->writeln($article['title']);
-            $output->writeln($article['description']);
+            $title = isset($article['title']) && is_string($article['title']) ? (string) $article['title'] : 'No title';
+            $description = isset($article['description']) && is_string($article['description'])
+                ? (string) $article['description']
+                : 'No description';
+
+            $output->writeln($title);
+            $output->writeln($description);
             $output->writeln('Published on: ' . $formattedDate);
             $output->writeln('---');
         }
@@ -68,4 +73,3 @@ class NewsFetchCommand extends Command
         return Command::SUCCESS;
     }
 }
-
