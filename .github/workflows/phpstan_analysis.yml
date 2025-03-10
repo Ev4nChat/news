@@ -17,7 +17,9 @@ jobs:
           php-version: '8.2'
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
+        working-directory: v2
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --level=max
+        working-directory: v2
