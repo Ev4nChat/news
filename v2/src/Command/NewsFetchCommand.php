@@ -11,7 +11,7 @@ class NewsFetchCommand extends Command
 {
     private HttpClientInterface $client;
 
-    public function __construct(HttpClientInterface $client)
+     public function __construct(HttpClientInterface $client)
     {
         parent::__construct();
         $this->client = $client;
