@@ -16,7 +16,6 @@ $container = require_once __DIR__ . '/../config/services.php';
 $application = new Application();
 
 // Register your custom commands.
-$application->add(new GreetCommand());
 $application->add($container->get('app.command.fetch_news')); // @phpstan-ignore-line
 
 // Run the application.
