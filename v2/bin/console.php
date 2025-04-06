@@ -16,7 +16,8 @@ $container = require_once __DIR__ . '/../config/services.php';
 $application = new Application();
 
 // Register your custom commands.
-$application->add($container->get('app.command.fetch_news')); // @phpstan-ignore-line
+/** @var Symfony\Component\Console\Command\Command $command */
+$application->add($container->get('app.command.fetch_news'));
 
 // Run the application.
 $application->run();
