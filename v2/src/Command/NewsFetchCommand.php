@@ -36,7 +36,7 @@ class NewsFetchCommand extends Command
                     ,
                 ],
             ]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $output->writeln("No news found or an error occurred.");
             return Command::FAILURE;
         }
