@@ -3,8 +3,6 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use App\Command\GreetCommand;
-use App\Command\NewsFetchCommand;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
