@@ -70,8 +70,8 @@ class NewsFetchCommand extends Command
                 ? (string) $article['description']
                 : 'No description';
 
-            $output->writeln($title);
-            $output->writeln($description);
+            $output->writeln("<info>$title</info>");
+            $output->writeln("<comment>$description</comment>");
             $output->writeln('Published on: ' . $formattedDate);
             $output->writeln('---');
         }
