@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,13 +28,18 @@ class NewsFetchCommand extends Command
     {
         $API_TOKEN = isset($_ENV['API_TOKEN']) && is_string($_ENV['API_TOKEN']) ? $_ENV['API_TOKEN'] : '';
 
-        $response = $this->client->request('GET', 'https://api.thenewsapi.com/v1/news/top?locale=us&language=en', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $API_TOKEN
+        try {
+            $response = $this->client->request('GET', 'https://api.thenewsapi.com/v1/news/top?locale=us&language=en', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $API_TOKEN
 
-                ,
-            ],
-        ]);
+                    ,
+                ],
+            ]);
+        } catch(Exception $e) {
+            $output->writeln("No news found or an error occurred.");
+            return Command::FAILURE;
+        }
 
         $data = $response->toArray();
 
